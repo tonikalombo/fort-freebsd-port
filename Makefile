@@ -1,36 +1,33 @@
-PORTNAME= fort
-DISTVERSION= 1.5.1
+PORTNAME=	fort
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.5.1
 CATEGORIES=	net
-MASTER_SITES= https://github.com/NICMx/FORT-validator/releases/download/v1.5.1/fort-1.5.1.tar.gz
-LICENSE_FILE=	${WRKSRC}/LICENSE
+
 MAINTAINER=	toni@devboks.com
-COMMENT= This is the FreeBSD Port for the FORT Validator, an open source RPKI validator. 
-NO_BUILD=	no
+COMMENT=	FORT Validator is an open source RPKI validator
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libcurl.so:ftp/curl libjansson.so:devel/jansson \
+		libxml2.so:textproc/libxml2
+
+USES=		autoreconf pkgconfig ssl
+USE_GCC=	yes
+USE_GITHUB=	yes
 USE_RC_SUBR=	fort
-FETCH_DEPENDS= curl:${PORTSDIR}/ftp/curl
-USES=	autoconf:${PORTSDIR}/devel/autoconf \
-				automake:${PORTSDIR}/devel/automake \
-				gcc:${PORTSDIR}/lang/gcc \
-				jansson:${PORTSDIR}/devel/jansson \
-				pkgconf:${PORTSDIR}/devel/pkgconf \
-				rsync:${PORTSDIR}/net/rsync \
-				libxml2:${PORTSDIR}/textproc/libxml2
-pre-install:
-	@ln -s /usr/local/include/jansson.h /usr/include/jansson.h
-	@ln -s /usr/local/include/jansson_config.h /usr/include/jansson_config.h
-	@ln -s /usr/local/include/curl /usr/include/curl
 
-do-install:
-	@cd ${WRKSRC}/ && ${COPYTREE_SHARE} . ${STAGEDIR}/	
+GH_ACCOUNT=	NICMx
+GH_PROJECT=	FORT-validator
 
+GNU_CONFIGURE=	yes
+
+post-patch:
+	@${REINPLACE_CMD} -e "s|/tmp/fort|${ETCDIR}|" \
+		${WRKSRC}/examples/config.json
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fort
-	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/fort
-	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/fort/tal
-	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/fort/repository
-	${INSTALL_DATA} ${PORTSDIR}/net/fort/files/fort-config.json.example \
-		${STAGEDIR}${PREFIX}/etc/fort/fort-config.json.example
-	@fort --init-tals --tal ${STAGEDIR}/${PREFIX}/etc/fort/tal
-
+	@${MKDIR} ${STAGEDIR}${ETCDIR}/repository ${STAGEDIR}${ETCDIR}/tal
+	${INSTALL_DATA} ${WRKSRC}/examples/config.json \
+                ${STAGEDIR}${ETCDIR}/fort-config.json.sample
 
 .include <bsd.port.mk>
