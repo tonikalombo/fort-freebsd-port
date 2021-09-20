@@ -18,25 +18,23 @@ start_precmd=check_init
 command="%%PREFIX%%/bin/${name}"
 
 load_rc_config $name
-
 : ${fort_enable="NO"}
+: ${wrkdir:="%%ETCDIR%%"}
 
-: ${wrkdir:="%%ETCDIR%%/fort"}
 
-
-fort_config=${fort_conf:-"%%ETCDIR%%/fort/fort-config.json"}
+fort_config=${fort_conf:-"%%ETCDIR%%/fort-config.json"}
 required_file=${fort_config}
 command_args="--configuration-file=${fort_config}"
 
 check_init() {
-	if [ ! -d ${wrkdir}/tals ]; then
+	if [ ! -d ${wrkdir}/tal ]; then
 		echo
 		echo -n "Need to initialize fort with tals, "
 		echo "see man fort"
 		echo
 		exit 1
 	fi
-	if [ ! -d ${fort_config} ]; then
+	if [ ! -f ${fort_config} ]; then
 		echo
 		echo -n "Configuration file not found at ${fort_config} "
 		echo  "Please create one before starting Fort, "
