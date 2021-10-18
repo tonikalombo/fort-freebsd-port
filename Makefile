@@ -11,6 +11,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl libjansson.so:devel/jansson \
 		libxml2.so:textproc/libxml2
+RUN_DEPENDS=	${LOCALBASE}/bin/rsync:net/rsync
 
 USES=		autoreconf pkgconfig ssl
 USE_GCC=	yes
@@ -28,6 +29,6 @@ post-patch:
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/repository ${STAGEDIR}${ETCDIR}/tal
 	${INSTALL_DATA} ${WRKSRC}/examples/config.json \
-                ${STAGEDIR}${ETCDIR}/fort-config.json.sample
+		${STAGEDIR}${ETCDIR}/fort-config.json.sample
 
 .include <bsd.port.mk>
