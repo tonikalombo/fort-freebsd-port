@@ -26,6 +26,10 @@ GNU_CONFIGURE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e "s|/tmp/fort|${ETCDIR}|" \
 		${WRKSRC}/examples/config.json
+	@${REINPLACE_CMD} -e "s|/usr/local/ssl|/etc/ssl|" \
+		${WRKSRC}/examples/config.json
+	@${REINPLACE_CMD} -e "s|daemon: false,|daemon: true,|" \
+		${WRKSRC}/examples/config.json
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/repository ${STAGEDIR}${ETCDIR}/tal
 	${INSTALL_DATA} ${WRKSRC}/examples/config.json \
