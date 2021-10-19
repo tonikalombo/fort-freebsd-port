@@ -24,7 +24,7 @@ load_rc_config $name
 
 fort_config=${fort_conf:-"%%ETCDIR%%/fort-config.json"}
 required_file=${fort_config}
-command_args="--configuration-file=${fort_config}"
+command_args="--configuration-file=${fort_config} --daemon=true"
 
 check_init() {
 	if [ ! -d ${wrkdir}/tal ]; then

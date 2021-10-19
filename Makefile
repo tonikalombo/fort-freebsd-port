@@ -30,7 +30,7 @@ post-patch:
 		${WRKSRC}/examples/config.json
 	@${REINPLACE_CMD} -e "s|/usr/local/ssl|/etc/ssl|" \
 		${WRKSRC}/examples/config.json
-	@${REINPLACE_CMD} -e "s|\"daemon\": false,|\"daemon\": true,|" \
+	@${REINPLACE_CMD} -e "/\"daemon\": false,/d" \
 		${WRKSRC}/examples/config.json
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/repository ${STAGEDIR}${ETCDIR}/tal
