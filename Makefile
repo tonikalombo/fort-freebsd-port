@@ -23,6 +23,8 @@ GH_PROJECT=	FORT-validator
 
 GNU_CONFIGURE=	yes
 
+SUB_FILES=	pkg-message
+
 post-patch:
 	@${REINPLACE_CMD} -e "s|/tmp/fort|${ETCDIR}|" \
 		${WRKSRC}/examples/config.json
